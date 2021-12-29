@@ -2,17 +2,9 @@
 #include "Utils.h"
 
 void TapKey(char key, int time) {
-    UINT mappedkey;
-    INPUT input = { 0 };
-    SHORT keyScan = VkKeyScan(key);
-    mappedkey = MapVirtualKey(LOBYTE(keyScan), 0);
-    input.type = INPUT_KEYBOARD;
-    input.ki.dwFlags = KEYEVENTF_SCANCODE;
-    input.ki.wScan = mappedkey;
-    SendInput(1, &input, sizeof(input));
+    INPUT input = PressKey(key);
     Sleep(time);
-    input.ki.dwFlags = KEYEVENTF_SCANCODE | KEYEVENTF_KEYUP;
-    SendInput(1, &input, sizeof(input));
+    UnpressKey(input);
 }
 
 INPUT PressKey(char key) {
