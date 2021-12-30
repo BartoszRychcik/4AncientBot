@@ -1,15 +1,6 @@
 #include <iostream>
 #include "Utils.h"
-#define DEFAULT_WINDOW_HIGH 768
-#define DEFAULT_WINDOW_WIDTH 1024
 using namespace std;
-
-void ShowCursorPosition(HWND hWND) {
-    POINT p;
-    GetCursorPos(&p);
-    ScreenToClient(hWND, &p);
-    cout << "x-position: " << p.x << " | y-position: " << p.y << endl;
-}
 
 HWND GetGameWindowByTitle(LPCWSTR windowTitle) {
     HWND hWND = FindWindow(NULL, windowTitle);

@@ -8,13 +8,13 @@ void TapKey(char key, int time) {
 }
 
 INPUT PressKey(char key) {
-    UINT mappedkey;
+    UINT mappedKey;
     INPUT input = { 0 };
     SHORT keyScan = VkKeyScan(key);
-    mappedkey = MapVirtualKey(LOBYTE(keyScan), 0);
+    mappedKey = MapVirtualKey(LOBYTE(keyScan), 0);
     input.type = INPUT_KEYBOARD;
     input.ki.dwFlags = KEYEVENTF_SCANCODE;
-    input.ki.wScan = mappedkey;
+    input.ki.wScan = mappedKey;
     SendInput(1, &input, sizeof(input));
     return input;
 }
@@ -24,39 +24,60 @@ void UnpressKey(INPUT input) {
     SendInput(1, &input, sizeof(input));
 }
 
-/*
-        if (GetAsyncKeyState(VK_NUMPAD2)) { // leftclick
-            cout << "numpad2_click";
-            INPUT iNPUT = { 0 };
-            iNPUT.type = INPUT_MOUSE;
-            iNPUT.mi.dwFlags = MOUSEEVENTF_LEFTDOWN;
-            SendInput(1, &iNPUT, sizeof(iNPUT));
-            ZeroMemory(&iNPUT, sizeof(iNPUT));
-            iNPUT.type = INPUT_MOUSE;
-            iNPUT.mi.dwFlags = MOUSEEVENTF_LEFTUP;
-            SendInput(1, &iNPUT, sizeof(iNPUT));
-        }
+void ClickLeftMouseButton(int time) {
+    INPUT input = PressLeftMouseButton();
+    Sleep(time);
+    UnpressLeftMouseButton(input);
+}
 
-        if (false) { // Set mouse position using SendInput
-            cout << "numpad4_click";
-            int x = 100;
-            int y = 100;
+void DoubleClick() {
+    ClickLeftMouseButton(5);
+    ClickLeftMouseButton(5);
+}
 
-            // Get total screen coordinates
-            int screen_x = GetSystemMetrics(SM_CXSCREEN);
-            int screen_y = GetSystemMetrics(SM_CYSCREEN);
+void MoveMousePosition(HWND hWND, int x, int y) {
+    WINDOWPLACEMENT wp;
+    GetWindowPlacement(hWND, &wp);
 
-            WINDOWPLACEMENT wp;
-            GetWindowPlacement(hWND, &wp);
+    long xConverted = (65535 * (x + wp.rcNormalPosition.left)) / DEFAULT_WINDOW_WIDTH;
+    long yConverted = (65535 * (y + wp.rcNormalPosition.top)) / DEFAULT_WINDOW_HIGH;
 
-            long xConverted = (65535 * (x + wp.rcNormalPosition.left)) / screen_x;
-            long yConverted = (65535 * (y + wp.rcNormalPosition.top)) / screen_y;
+    INPUT iNPUT = { 0 };
+    iNPUT.type = INPUT_MOUSE;
+    iNPUT.mi.dwFlags = (MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE);
+    iNPUT.mi.dx = xConverted;
+    iNPUT.mi.dy = yConverted;
+    SendInput(1, &iNPUT, sizeof(iNPUT));
+}
 
-            INPUT iNPUT = { 0 };
-            iNPUT.type = INPUT_MOUSE;
-            iNPUT.mi.dwFlags = (MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE);
-            iNPUT.mi.dx = xConverted;
-            iNPUT.mi.dy = yConverted;
-            SendInput(1, &iNPUT, sizeof(iNPUT));
-            }
-            */
+INPUT PressLeftMouseButton() {
+    INPUT input = { 0 };
+    input.type = INPUT_MOUSE;
+    input.mi.dwFlags = MOUSEEVENTF_LEFTDOWN;
+    SendInput(1, &input, sizeof(input));
+    return input;
+}
+
+void UnpressLeftMouseButton(INPUT input) {
+    input.mi.dwFlags = MOUSEEVENTF_LEFTUP;
+    SendInput(1, &input, sizeof(input));
+}
+
+void ClickRightMouseButton(int time) {
+    INPUT input = PressRightMouseButton();
+    Sleep(time);
+    UnpressRightMouseButton(input);
+}
+
+INPUT PressRightMouseButton() {
+    INPUT input = { 0 };
+    input.type = INPUT_MOUSE;
+    input.mi.dwFlags = MOUSEEVENTF_RIGHTDOWN;
+    SendInput(1, &input, sizeof(input));
+    return input;
+}
+
+void UnpressRightMouseButton(INPUT input) {
+    input.mi.dwFlags = MOUSEEVENTF_RIGHTUP;
+    SendInput(1, &input, sizeof(input));
+}
