@@ -14,7 +14,7 @@ int main(){
         if (a == "start") {
             InvolveInGameProcess(gameHandle);
             Sleep(3000);
-            GoFromStartToTeleport2B();
+            GoFromStartToTeleport2B(gameHandle);
         }
     }
 }

@@ -1,4 +1,3 @@
-#include <iostream>
 #include "UserActions.h"
 #include "ControlFunctions.h"
 using namespace std;
@@ -24,7 +23,7 @@ void GoFromStoreToTeleport2B() {
 	UnpressKey(straight);
 }
 
-void GoFromStartToTeleport2B() {
+void GoFromStartToTeleport2B(HWND gameHandle) {
 	cout << "Go from start to the teleport 2B called\n";
 	//MoveMousePosition(gameHandle, 100, 100);
 	DoubleClick();

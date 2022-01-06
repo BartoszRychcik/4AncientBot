@@ -1,5 +1,6 @@
 #pragma once
 #include <Windows.h>
+#include <iostream>
 #define DEFAULT_WINDOW_HIGH 768
 #define DEFAULT_WINDOW_WIDTH 1024
 
