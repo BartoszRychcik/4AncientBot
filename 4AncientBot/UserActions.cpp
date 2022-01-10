@@ -1,5 +1,6 @@
 #include "UserActions.h"
 #include "ControlFunctions.h"
+#include "Utils.h"
 using namespace std;
 
 void RotateCharacter180() {
@@ -12,32 +13,44 @@ void OpenInventory() {
 	TapKey('i');
 }
 
-void GoFromStoreToTeleport2B() {
-	cout << "Go from the store to the teleport 2B called\n";
-	INPUT straight = PressKey('w');
-	Sleep(6700);
-	TapKey('d', 400);
-	Sleep(15000);
-	TapKey('d', 300);
-	Sleep(10000);
-	UnpressKey(straight);
-}
-
 void GoFromStartToTeleport2B(HWND gameHandle) {
 	cout << "Go from start to the teleport 2B called\n";
-	//MoveMousePosition(gameHandle, 100, 100);
-	DoubleClick();
+	TapKey('m');
+	Sleep(100);
+	BITMAP screen = GetScreenShot(gameHandle);
+	PlayerPosition position = ReadPlayerPositionFromScreen();
+	
+	/*
+	TapKey('n');
+	Sleep(10);
 	INPUT straight = PressKey('w');
-	Sleep(6750);
-	TapKey('a', 300);
-	Sleep(10000);
+	Sleep(3000);
+	TapKey('d', 300);
+	Sleep(100);
+	UnpressKey(straight);
+	*/
+	/*
+	SetMousePosition(gameHandle, 300, 200);
+	DoubleClick();
+	Sleep(500);
+	SetMousePosition(gameHandle, 300, 160);
+	DoubleClick();
+	Sleep(4000);
+
+	INPUT straight = PressKey('w');
+	Sleep(50);
+	TapKey('d', 1000);
+	Sleep(100);
 	TapKey('a', 100);
 	Sleep(5000);
-	TapKey('d', 450);
+	TapKey('a', 330);
+	Sleep(4000);
+	TapKey('a', 60);
 	Sleep(12000);
-	TapKey('d', 100);
-	Sleep(8000);
-	TapKey('d', 500);
-	Sleep(5000);
+	TapKey('d', 250);
+	Sleep(7500);
+	TapKey('d', 120);
+	Sleep(12000);
 	UnpressKey(straight);
+	*/
 }

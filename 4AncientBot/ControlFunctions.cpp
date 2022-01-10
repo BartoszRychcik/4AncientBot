@@ -30,26 +30,6 @@ void ClickLeftMouseButton(int time) {
     UnpressLeftMouseButton(input);
 }
 
-void DoubleClick() {
-    ClickLeftMouseButton(5);
-    ClickLeftMouseButton(5);
-}
-
-void MoveMousePosition(HWND hWND, int x, int y) {
-    WINDOWPLACEMENT wp;
-    GetWindowPlacement(hWND, &wp);
-
-    long xConverted = (65535 * (x + wp.rcNormalPosition.left)) / DEFAULT_WINDOW_WIDTH;
-    long yConverted = (65535 * (y + wp.rcNormalPosition.top)) / DEFAULT_WINDOW_HIGH;
-
-    INPUT iNPUT = { 0 };
-    iNPUT.type = INPUT_MOUSE;
-    iNPUT.mi.dwFlags = (MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE);
-    iNPUT.mi.dx = xConverted;
-    iNPUT.mi.dy = yConverted;
-    SendInput(1, &iNPUT, sizeof(iNPUT));
-}
-
 INPUT PressLeftMouseButton() {
     INPUT input = { 0 };
     input.type = INPUT_MOUSE;
@@ -80,4 +60,37 @@ INPUT PressRightMouseButton() {
 void UnpressRightMouseButton(INPUT input) {
     input.mi.dwFlags = MOUSEEVENTF_RIGHTUP;
     SendInput(1, &input, sizeof(input));
+}
+
+void DoubleClick() {
+    ClickLeftMouseButton(5);
+    ClickLeftMouseButton(5);
+}
+
+void SetMousePosition(HWND hWND, int x, int y) {
+    WINDOWPLACEMENT wp;
+    GetWindowPlacement(hWND, &wp);
+
+    long xConverted = (65535 * (x + wp.rcNormalPosition.left)) / DEFAULT_WINDOW_WIDTH;
+    long yConverted = (65535 * (y + wp.rcNormalPosition.top)) / DEFAULT_WINDOW_HIGH;
+
+    INPUT iNPUT = { 0 };
+    iNPUT.type = INPUT_MOUSE;
+    iNPUT.mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE;
+    iNPUT.mi.dx = xConverted;
+    iNPUT.mi.dy = yConverted;
+    SendInput(1, &iNPUT, sizeof(INPUT));
+}
+
+void MoveMousePosition(INPUT* input, HWND hWND, int x, int y) {
+    WINDOWPLACEMENT wp;
+    GetWindowPlacement(hWND, &wp);
+
+    long xConverted = (65535 * (x + wp.rcNormalPosition.left)) / DEFAULT_WINDOW_WIDTH;
+    long yConverted = (65535 * (y + wp.rcNormalPosition.top)) / DEFAULT_WINDOW_HIGH;
+
+    input->mi.dwFlags = MOUSEEVENTF_MOVE;
+    input->mi.dx = xConverted;
+    input->mi.dy = yConverted;
+    SendInput(1, input, sizeof(INPUT));
 }

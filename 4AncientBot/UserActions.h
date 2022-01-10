@@ -5,4 +5,3 @@
 void RotateCharacter180();
 void OpenInventory();
 void GoFromStartToTeleport2B(HWND gameHandle);
-void GoFromStoreToTeleport2B();

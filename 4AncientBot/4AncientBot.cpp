@@ -12,7 +12,7 @@ int main(){
         cin >> a;
 
         if (a == "start") {
-            InvolveInGameProcess(gameHandle);
+            ActivateGameWindow(gameHandle);
             Sleep(3000);
             GoFromStartToTeleport2B(gameHandle);
         }
