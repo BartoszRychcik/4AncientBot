@@ -4,8 +4,10 @@
 #include "opencv.hpp"
 #include <baseapi.h>
 #include <allheaders.h>
-#define DEFAULT_WINDOW_HIGH 768
-#define DEFAULT_WINDOW_WIDTH 1024
+#define DEFAULT_WINDOW_HIGH 960
+#define DEFAULT_WINDOW_WIDTH 1280
+using namespace std;
+using namespace cv;
 
 struct PlayerPosition {
     double x;
@@ -14,5 +16,6 @@ struct PlayerPosition {
 
 HWND GetGameWindowByTitle(LPCWSTR windowTitle);
 void ActivateGameWindow(HWND hWND);
-BITMAP GetScreenShot(HWND gameHandle);
-PlayerPosition ReadPlayerPositionFromScreen();
+Mat GetScreenShot(HWND gameHandle);
+PlayerPosition ReadPlayerPositionFromScreen(Mat screen);
+void SetPositionFromOCRString(char* text, int* index, double* variable);

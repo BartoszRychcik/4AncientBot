@@ -13,44 +13,46 @@ void OpenInventory() {
 	TapKey('i');
 }
 
-void GoFromStartToTeleport2B(HWND gameHandle) {
-	cout << "Go from start to the teleport 2B called\n";
-	TapKey('m');
-	Sleep(100);
-	BITMAP screen = GetScreenShot(gameHandle);
-	PlayerPosition position = ReadPlayerPositionFromScreen();
-	
+void SecondBattleBot(HWND gameHandle) {
+	cout << "Go from teleport to the start position called\n";
 	/*
-	TapKey('n');
-	Sleep(10);
 	INPUT straight = PressKey('w');
-	Sleep(3000);
-	TapKey('d', 300);
-	Sleep(100);
-	UnpressKey(straight);
-	*/
-	/*
-	SetMousePosition(gameHandle, 300, 200);
-	DoubleClick();
-	Sleep(500);
-	SetMousePosition(gameHandle, 300, 160);
-	DoubleClick();
+	Sleep(9300);
+	TapKey('d', 500);
 	Sleep(4000);
-
-	INPUT straight = PressKey('w');
-	Sleep(50);
-	TapKey('d', 1000);
-	Sleep(100);
-	TapKey('a', 100);
+	TapKey('d', 70);
+	Sleep(4000);
+	TapKey('d', 70);
 	Sleep(5000);
-	TapKey('a', 330);
-	Sleep(4000);
-	TapKey('a', 60);
-	Sleep(12000);
-	TapKey('d', 250);
-	Sleep(7500);
-	TapKey('d', 120);
-	Sleep(12000);
+	TapKey('a', 400);
+	UnpressKey(straight);
+	//Sleep(10000);
+	*/
+	
+	while (true) {
+		TapKey('m');
+		Sleep(50);
+		Mat screen = GetScreenShot(gameHandle);
+		Rect crop_region(640, 808, 90, 15);
+		Mat positionRegion = screen(crop_region);
+		Mat grayPositionRegion,resized;
+		cvtColor(positionRegion, grayPositionRegion, cv::COLOR_BGR2GRAY);
+		resize(positionRegion, resized, Size(93*2, 18*2), INTER_LINEAR);
+		Sleep(50);
+		TapKey('m');
+		PlayerPosition position = ReadPlayerPositionFromScreen(positionRegion);
+		cout << position.x << " " << position.y << endl;
+		Sleep(5000);
+	}
+	/*
+	straight = PressKey('w');
+	Sleep(2000);
+	TapKey('d', 70);
+	Sleep(2800);
+	TapKey(' ');
+	Sleep(1000);
+	TapKey('a', 150);
+	Sleep(3000);
 	UnpressKey(straight);
 	*/
 }

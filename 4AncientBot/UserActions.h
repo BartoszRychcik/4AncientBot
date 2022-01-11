@@ -4,4 +4,4 @@
 
 void RotateCharacter180();
 void OpenInventory();
-void GoFromStartToTeleport2B(HWND gameHandle);
+void SecondBattleBot(HWND gameHandle);

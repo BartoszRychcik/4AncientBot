@@ -14,7 +14,7 @@ int main(){
         if (a == "start") {
             ActivateGameWindow(gameHandle);
             Sleep(3000);
-            GoFromStartToTeleport2B(gameHandle);
+            SecondBattleBot(gameHandle);
         }
     }
 }
