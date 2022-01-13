@@ -45,7 +45,7 @@ Mat GetScreenShot(HWND gameHandle)
 }
 
 PlayerPosition ReadPlayerPositionFromScreen(Mat screen) {
-    PlayerPosition* position = new PlayerPosition();
+    PlayerPosition* position = new PlayerPosition(0,0);
     char* outText;
 
     tesseract::TessBaseAPI* api = new tesseract::TessBaseAPI();

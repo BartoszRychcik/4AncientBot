@@ -12,6 +12,7 @@ using namespace cv;
 struct PlayerPosition {
     double x;
     double y;
+    PlayerPosition(double x, double y) : x(x), y(y) {}
 };
 
 HWND GetGameWindowByTitle(LPCWSTR windowTitle);
