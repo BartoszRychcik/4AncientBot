@@ -1,10 +1,12 @@
 #include "Utils.h"
+#include <baseapi.h>
+#include <allheaders.h>
 
 HWND GetGameWindowByTitle(LPCWSTR windowTitle) {
     HWND hWND = FindWindow(NULL, windowTitle);
     while (hWND == NULL) {
         hWND = FindWindow(NULL, windowTitle);
-        cout << "Launch 4Ancient!" << endl;
+        printf("Launch 4Ancient!\n");
         Sleep(1000);
     }
 
@@ -53,7 +55,7 @@ PlayerPosition ReadPlayerPositionFromScreen(Mat screen) {
         fprintf(stderr, "Could not initialize tesseract.\n");
         exit(1);
     }
-
+    api->SetVariable("user_defined_dpi", "300");
     api->SetImage((uchar*)screen.data, screen.size().width, screen.size().height, screen.channels(), (int)screen.step1());
     outText = api->GetUTF8Text();
     
