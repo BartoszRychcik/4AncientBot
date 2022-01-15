@@ -19,4 +19,4 @@ HWND GetGameWindowByTitle(LPCWSTR windowTitle);
 void ActivateGameWindow(HWND hWND);
 Mat GetScreenShot(HWND gameHandle);
 PlayerPosition ReadPlayerPositionFromScreen(Mat screen);
-void SetPositionFromOCRString(char* text, int* index, double* variable);
+void DecodePositionFromOCRString(char* text, int* index, double* variable);

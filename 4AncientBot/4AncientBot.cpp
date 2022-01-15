@@ -13,8 +13,8 @@ int main(){
 
         if (a == "start") {
             ActivateGameWindow(gameHandle);
-            Sleep(3000);
-            SecondBattleBot(gameHandle);
+            Sleep(2000);
+            SecondBattleBotLastSpot(gameHandle);
         }
     }
 }

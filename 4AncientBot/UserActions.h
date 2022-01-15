@@ -1,7 +1,7 @@
 #pragma once
 #include <iostream>
 #include <Windows.h>
+using namespace std;
 
-void RotateCharacter180();
-void OpenInventory();
-void SecondBattleBot(HWND gameHandle);
+void KillThemAll(HWND gameHandle);
+void SecondBattleBotLastSpot(HWND gameHandle);

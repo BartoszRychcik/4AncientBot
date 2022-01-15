@@ -55,12 +55,11 @@ PlayerPosition ReadPlayerPositionFromScreen(Mat screen) {
     }
 
     api->SetImage((uchar*)screen.data, screen.size().width, screen.size().height, screen.channels(), (int)screen.step1());
-    api->Recognize(0);
     outText = api->GetUTF8Text();
     
     int index = 0;
-    SetPositionFromOCRString(outText, &index, &(position->x));
-    SetPositionFromOCRString(outText, &index, &(position->y));
+    DecodePositionFromOCRString(outText, &index, &(position->x));
+    DecodePositionFromOCRString(outText, &index, &(position->y));
 
     api->End();
     delete api;
@@ -69,7 +68,7 @@ PlayerPosition ReadPlayerPositionFromScreen(Mat screen) {
     return *position;
 }
 
-void SetPositionFromOCRString(char* text, int* index, double* variable) {
+void DecodePositionFromOCRString(char* text, int* index, double* variable) {
     double multiplier = 100.0;
     int j = 0;
     while (j != 5) {

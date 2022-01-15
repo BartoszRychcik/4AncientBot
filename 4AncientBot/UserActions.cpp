@@ -1,17 +1,6 @@
 #include "UserActions.h"
 #include "ControlFunctions.h"
 #include "Utils.h"
-using namespace std;
-
-void RotateCharacter180() {
-	cout << "Rotate character 180 called\n";
-	TapKey('n');
-}
-
-void OpenInventory() {
-	cout << "Open inventory called\n";
-	TapKey('i');
-}
 
 PlayerPosition GetPlayerPosition(HWND gameHandle) {
 	Mat screen = GetScreenShot(gameHandle);
@@ -23,36 +12,31 @@ PlayerPosition GetPlayerPosition(HWND gameHandle) {
 }
 
 void CorrectionMechanism(HWND gameHandle, list<PlayerPosition>::iterator it, bool nPressed) {
-	UINT mappedKey;
-	INPUT inpute = { 0 };
+	INPUT inpute = { 0 }, inputq = { 0 }, inputw = { 0 }, inputs = { 0 };
+	inputs.ki.dwFlags = inputw.ki.dwFlags = inputq.ki.dwFlags = inpute.ki.dwFlags = KEYEVENTF_SCANCODE;
+
 	SHORT keyScan = VkKeyScan('e');
-	mappedKey = MapVirtualKey(LOBYTE(keyScan), 0);
-	inpute.ki.dwFlags = KEYEVENTF_SCANCODE;
-	inpute.ki.wScan = mappedKey;
+	inpute.ki.wScan = MapVirtualKey(LOBYTE(keyScan), 0);
 
-	UINT mappedKey2;
-	INPUT inputq = { 0 };
 	SHORT keyScan2 = VkKeyScan('q');
-	mappedKey2 = MapVirtualKey(LOBYTE(keyScan2), 0);
-	inputq.ki.dwFlags = KEYEVENTF_SCANCODE;
-	inputq.ki.wScan = mappedKey2;
+	inputq.ki.wScan = MapVirtualKey(LOBYTE(keyScan2), 0);
 
-	UINT mappedKey3;
-	INPUT inputw = { 0 };
 	SHORT keyScan3 = VkKeyScan('w');
-	mappedKey3 = MapVirtualKey(LOBYTE(keyScan3), 0);
-	inputw.ki.dwFlags = KEYEVENTF_SCANCODE;
-	inputw.ki.wScan = mappedKey3;
+	inputw.ki.wScan = MapVirtualKey(LOBYTE(keyScan3), 0);
+
+	SHORT keyScan4 = VkKeyScan('s');
+	inputs.ki.wScan = MapVirtualKey(LOBYTE(keyScan4), 0);
 
 	TapKey('m');
 	while (true) {
 		PlayerPosition position = GetPlayerPosition(gameHandle);
-		cout << fabs(it->x - position.x) << " " << (position.y - 0.5 > it->y) << endl;
+		//cout << fabs(it->x - position.x) << " " << (position.y - 0.5 > it->y) << endl;
 
-		if (fabs(it->x - position.x) < 0.5 && ((!nPressed && position.y > it->y) || (nPressed && position.y < it->y))) {
+		if (fabs(it->x - position.x) <= 1 && fabs(it->y - position.y) <= 1) {
 			UnpressKey(inputq);
 			UnpressKey(inpute);
 			UnpressKey(inputw);
+			UnpressKey(inputs);
 			break;
 		}
 
@@ -83,9 +67,31 @@ void CorrectionMechanism(HWND gameHandle, list<PlayerPosition>::iterator it, boo
 			}
 		}
 
-		if ((!nPressed && position.y < it->y) || (nPressed && position.y > it->y)) {
-			inputw.type = INPUT_KEYBOARD;
-			SendInput(1, &inputw, sizeof(inputw));
+		if (fabs(it->y - position.y) >= 0.5) {
+			if (nPressed) {
+				if (position.y + 0.5 < it->y) {
+					UnpressKey(inputw);
+					inputs.type = INPUT_KEYBOARD;
+					SendInput(1, &inputs, sizeof(inputs));
+				}
+				if (position.y - 0.5 > it->y) {
+					UnpressKey(inputs);
+					inputw.type = INPUT_KEYBOARD;
+					SendInput(1, &inputw, sizeof(inputw));
+				}
+			}
+			else {
+				if (position.y + 0.5 < it->y) {
+					UnpressKey(inputs);
+					inputw.type = INPUT_KEYBOARD;
+					SendInput(1, &inputw, sizeof(inputw));
+				}
+				if (position.y - 0.5 > it->y) {
+					UnpressKey(inputw);
+					inputs.type = INPUT_KEYBOARD;
+					SendInput(1, &inputs, sizeof(inputs));
+				}
+			}
 		}
 
 		Sleep(50);
@@ -93,59 +99,62 @@ void CorrectionMechanism(HWND gameHandle, list<PlayerPosition>::iterator it, boo
 	TapKey('m');
 }
 
-void SecondBattleBot(HWND gameHandle) {
-	cout << "Go from teleport to the start position called\n";
-	list<PlayerPosition> path = { 
-		PlayerPosition(224.00,420.00),
-		PlayerPosition(260.00,473.00),
-		PlayerPosition(265.00,452.00),
+void KillThemAll(HWND gameHandle) {
+	SetMousePosition(gameHandle, 436, 463);
+
+	for (int i = 0; i < 2; i++) {
+		TapKey('1');
+		Sleep(200);
+		
+		for (int j = 0; j < 3; j++) {
+			TapKey('2');
+			Sleep(300);
+			ClickLeftMouseButton();
+			Sleep(1200);
+		}
+
+		for (int j = 0; j < 3; j++) {
+			TapKey('3');
+			Sleep(100);
+		}
+		
+		Sleep(1000);
+	}
+	Sleep(8000);
+}
+
+void SecondBattleBotLastSpot(HWND gameHandle) {
+	cout << "Second battle Bot Last Spot called\n";
+	list<PlayerPosition> path = {
+		PlayerPosition(338.75,205.15)
 	};
 
-	INPUT straight = PressKey('w');
-	Sleep(9300);
-	TapKey('d', 500);
-	Sleep(4000);
-	TapKey('d', 70);
-	Sleep(4000);
-	TapKey('d', 70);
-	Sleep(5000);
-	TapKey('a', 400);
-	UnpressKey(straight);
+	while (true) {
+		CorrectionMechanism(gameHandle, path.begin(), false);
+		Sleep(100);
+		TapKey('w', 9500);
+		Sleep(100);
+		TapKey('e', 7800);
+		Sleep(100);
+		TapKey('q', 4300);
+		Sleep(100);
+		TapKey('n');
 
-	auto it = path.begin();
-	CorrectionMechanism(gameHandle, it, false);
-	it++;
+		KillThemAll(gameHandle);
+		Sleep(100);
+		TapKey('e', 3600);
+		Sleep(100);
+		TapKey('w', 9500);
 
-	straight = PressKey('w');
-	Sleep(2000);
-	TapKey('d', 70);
-	Sleep(2800);
-	TapKey(' ');
-	Sleep(200);
-	TapKey('a', 50);
-	Sleep(50);
-	TapKey('d', 50);
-	Sleep(8000);
-	UnpressKey(straight);
-
-	CorrectionMechanism(gameHandle, it, false);
-	it++;
-	
-	TapKey('n');
-	TapKey('q', 2000);
-	straight = PressKey('w');
-	TapKey('q', 2000);
-	Sleep(2000);
-	UnpressKey(straight);
-
-	CorrectionMechanism(gameHandle, it, true);
-	it++;
-
-	straight = PressKey('w');
-	Sleep(1000);
-	TapKey('e', 500);
-	UnpressKey(straight);
-
-	TapKey('1');
-	TapKey('3');
+		TapKey('w', 5200);
+		Sleep(100);
+		TapKey('n');
+		Sleep(10000);
+		TapKey('5');
+		Sleep(30000);
+		TapKey('5');
+		Sleep(30000);
+		TapKey('w', 4000);
+		Sleep(100);
+	}
 }
