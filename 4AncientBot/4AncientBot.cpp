@@ -12,9 +12,9 @@ int main(){
         cin >> a;
 
         if (a == "start") {
-            InvolveInGameProcess(gameHandle);
-            Sleep(3000);
-            GoFromStartToTeleport2B(gameHandle);
+            ActivateGameWindow(gameHandle);
+            Sleep(2000);
+            SecondBattleBotLastSpot(gameHandle);
         }
     }
 }

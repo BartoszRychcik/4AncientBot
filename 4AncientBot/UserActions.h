@@ -1,8 +1,7 @@
 #pragma once
 #include <iostream>
 #include <Windows.h>
+using namespace std;
 
-void RotateCharacter180();
-void OpenInventory();
-void GoFromStartToTeleport2B(HWND gameHandle);
-void GoFromStoreToTeleport2B();
+void KillThemAll(HWND gameHandle);
+void SecondBattleBotLastSpot(HWND gameHandle);
