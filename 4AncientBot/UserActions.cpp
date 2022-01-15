@@ -6,8 +6,6 @@ PlayerPosition GetPlayerPosition(HWND gameHandle) {
 	Mat screen = GetScreenShot(gameHandle);
 	Rect crop_region(640, 808, 90, 15);
 	Mat positionRegion = screen(crop_region);
-	Mat resized;
-	resize(positionRegion, resized, Size(93 * 3, 18 * 3), INTER_LINEAR);
 	return ReadPlayerPositionFromScreen(positionRegion);
 }
 
@@ -100,7 +98,7 @@ void CorrectionMechanism(HWND gameHandle, list<PlayerPosition>::iterator it, boo
 }
 
 void KillThemAll(HWND gameHandle) {
-	SetMousePosition(gameHandle, 436, 463);
+	SetMousePosition(gameHandle, 436, 470);
 
 	for (int i = 0; i < 2; i++) {
 		TapKey('1');
@@ -120,11 +118,10 @@ void KillThemAll(HWND gameHandle) {
 		
 		Sleep(1000);
 	}
-	Sleep(8000);
+	Sleep(10000);
 }
 
 void SecondBattleBotLastSpot(HWND gameHandle) {
-	cout << "Second battle Bot Last Spot called\n";
 	list<PlayerPosition> path = {
 		PlayerPosition(338.75,205.15)
 	};
@@ -145,7 +142,7 @@ void SecondBattleBotLastSpot(HWND gameHandle) {
 		TapKey('e', 3600);
 		Sleep(100);
 		TapKey('w', 9500);
-
+		
 		TapKey('w', 5200);
 		Sleep(100);
 		TapKey('n');
@@ -153,7 +150,7 @@ void SecondBattleBotLastSpot(HWND gameHandle) {
 		TapKey('5');
 		Sleep(30000);
 		TapKey('5');
-		Sleep(30000);
+		Sleep(60000);
 		TapKey('w', 4000);
 		Sleep(100);
 	}
